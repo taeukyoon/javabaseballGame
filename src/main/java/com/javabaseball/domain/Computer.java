@@ -16,7 +16,7 @@ public class Computer {
 		countBall(input);
 	}
 
-	private void generateRandomNumbers() {
+	public void generateRandomNumbers() {
 		generateNumbers = new ArrayList<>();
 		while (generateNumbers.size() < Constants.BASEBALL_LENGTH) {
 			int num = ThreadLocalRandom.current().nextInt(Constants.MIN_NUM, Constants.MAX_NUM);
@@ -36,7 +36,7 @@ public class Computer {
 		this.strike = count;
 	}
 
-	public void countBall(List<Integer> input) {
+	private void countBall(List<Integer> input) {
 		int count = 0;
 		for (int i = 0; i < Constants.BASEBALL_LENGTH; i++) {
 			if (this.generateNumbers.contains(input.get(i))) {
@@ -46,4 +46,23 @@ public class Computer {
 		this.ball = count - this.strike; // ball이 strike랑 중복가능성이 있다.
 	}
 
+	// 출력 부분 구현
+	public void printScore() {
+		if (this.strike == 0 && this.ball == 0) {
+			System.out.println(Constants.RESULT_NOTHING);
+		} else if (this.strike != 0 && this.ball == 0) {
+			System.out.println(this.strike + Constants.RESULT_STRIKE);
+			if (gameOver()) {
+				System.out.println(Constants.RESULT_FINISH);
+			}
+		} else if (this.strike == 0) {
+			System.out.println(this.ball + Constants.RESULT_BALL);
+		} else {
+			System.out.println(this.strike + Constants.RESULT_STRIKE + " " + this.ball + Constants.RESULT_BALL);
+		}
+	}
+
+	public boolean gameOver() {
+		return this.strike == 3;
+	}
 }
